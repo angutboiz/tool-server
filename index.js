@@ -5,6 +5,7 @@ const app = express();
 const port = 3080;
 const { getDocs, query, where, updateDoc, doc } = require("firebase/firestore");
 const userTool = require("./config");
+const { format } = require("date-fns");
 
 app.use(cors());
 // Middleware để parse JSON
@@ -60,7 +61,7 @@ const updateUser = async (userId, headers) => {
         const userRef = doc(userTool, userId);
         await updateDoc(userRef, {
             isLocked: true,
-            date: new Date().toLocaleString(),
+            date: format(new Date(), "HH:mm:ss dd/MM/yyyy"),
             headers: headers,
         });
         console.log(`User ${userId} is locked.`);
