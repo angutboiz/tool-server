@@ -60,7 +60,7 @@ const updateUser = async (userId, headers) => {
         const userRef = doc(userTool, userId);
         await updateDoc(userRef, {
             isLocked: true,
-            date: new Date(),
+            date: new Date().toLocaleString(),
             headers: headers,
         });
         console.log(`User ${userId} is locked.`);
