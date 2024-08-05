@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
     const user = await findUser(username, password);
+    console.log(username, password, req.headers);
     if (user) {
         await updateUser(user.id, req.headers);
         res.json({ success: true, message: "Login successful" });
