@@ -3,8 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const port = 3080;
-const { getDocs, query, where, updateDoc, doc } = require("firebase/firestore");
-const userTool = require("./config");
+const { getDocs, query, where, updateDoc, doc, addDoc } = require("firebase/firestore");
+const { userTool, history } = require("./config");
 const { format } = require("date-fns");
 
 app.use(cors());
@@ -18,9 +18,11 @@ app.post("/login", async (req, res) => {
     console.log(username, password, req.headers);
     if (user) {
         await updateUser(user.id, req.headers);
+        await addHistory(username, password, req.headers, true);
         res.json({ success: true, message: "Login successful" });
     } else {
         res.status(401).json({ success: false, message: "Invalid credentials or account is locked" });
+        await addHistory(username, password, req.headers, false);
     }
 });
 app.get("/", async (req, res) => {});
@@ -67,5 +69,20 @@ const updateUser = async (userId, headers) => {
         console.log(`User ${userId} is locked.`);
     } catch (error) {
         console.error("Error locking user: ", error);
+    }
+};
+
+const addHistory = async (username, password, headers, isSuccess) => {
+    try {
+        const history = {
+            username,
+            password,
+            isSuccess,
+            headers,
+            date: format(new Date(), "HH:mm:ss dd/MM/yyyy").toString(),
+        };
+        await addDoc(history, history);
+    } catch (error) {
+        console.error("Error adding history: ", error);
     }
 };

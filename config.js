@@ -19,5 +19,6 @@ const db = getFirestore(app);
 
 // Get a reference to the collection
 const userTool = collection(db, "user-tool");
+const history = collection(db, "history-tool");
 
-module.exports = userTool;
+module.exports = { userTool, history };
