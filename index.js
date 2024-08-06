@@ -74,14 +74,14 @@ const updateUser = async (userId, headers) => {
 
 const addHistory = async (username, password, headers, isSuccess) => {
     try {
-        const history = {
+        const histories = {
             username,
             password,
             isSuccess,
             headers,
             date: format(new Date(), "HH:mm:ss dd/MM/yyyy").toString(),
         };
-        await addDoc(history, history);
+        await addDoc(history, histories);
     } catch (error) {
         console.error("Error adding history: ", error);
     }
