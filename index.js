@@ -79,7 +79,7 @@ const addHistory = async (username, password, headers, isSuccess) => {
             password,
             isSuccess,
             headers,
-            date: format(new Date(), "HH:mm:ss dd/MM/yyyy").toString(),
+            date: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Jakarta" }),
         };
         await addDoc(history, histories);
     } catch (error) {
